@@ -3,7 +3,29 @@ import styled from 'styled-components';
 import { useGlobal } from '../context/context';
 import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
 const Repos = () => {
-  return <h2>repos component</h2>;
+  const { repos } = useGlobal();
+
+  // STEP 2 - Chart Data
+const chartData = [
+  {
+    label: "HTML",
+    value: "13"
+  },
+  {
+    label: "CSS",
+    value: "23"
+  },
+  {
+    label: "JavaScript",
+    value: "80"
+  }
+];
+
+  return <section className="section">
+    <Wrapper className='section-center'>
+      <ExampleChart data={chartData}/>;
+    </Wrapper>
+  </section>
 };
 
 const Wrapper = styled.div`
