@@ -65,6 +65,7 @@ const Repos = () => {
       <Pie3D data={languages} />
       <Column3D data={chartData} />
       <Doughnut2D data={languageStars} />
+      <Bar3D data={chartData} />
     </Wrapper>
   </section>
 };
