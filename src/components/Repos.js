@@ -6,43 +6,65 @@ const Repos = () => {
   const { repos } = useGlobal();
 
   // counting languages
-  let languages = repos.reduce((total, item)=>{
-    const {language} = item;
+  let languages = repos.reduce((total, item) => {
+    const { language } = item;
 
     if (!language) return total;
     if (!total[language]) {
-      total[language] = {label:language, value:1};
+      total[language] = { label: language, value: 1 };
     } else {
-      total[language] = {...total[language], value: total[language].value + 1};
+      total[language] = { ...total[language], value: total[language].value + 1 };
     }
     return total;
-  },{})
+  }, {})
 
   // sorting languages
-  languages = Object.values(languages).sort((a,b)=>{
+  languages = Object.values(languages).sort((a, b) => {
     return b.value - a.value;
-  }).slice(0,5);
+  }).slice(0, 5);
+
+
+
+  // counting languageStars
+  let languageStars = repos.reduce((total, item) => {
+    const { language, stargazers_count } = item;
+
+    if (!language) return total;
+
+    if (!total[language]) {
+      total[language] = { label: language, value: stargazers_count };
+    } else {
+      total[language] = { ...total[language], value: total[language].value + stargazers_count };
+    }
+    return total;
+  }, {})
+
+  // sorting languageStars
+  languageStars = Object.values(languageStars).sort((a, b) => {
+    return b.value - a.value;
+  }).slice(0, 5);
 
   // Chart Data
-  // const chartData = [
-  //   {
-  //     label: "HTML",
-  //     value: "13"
-  //   },
-  //   {
-  //     label: "CSS",
-  //     value: "23"
-  //   },
-  //   {
-  //     label: "JavaScript",
-  //     value: "80"
-  //   }
-  // ];
+  const chartData = [
+    {
+      label: "HTML",
+      value: "13"
+    },
+    {
+      label: "CSS",
+      value: "23"
+    },
+    {
+      label: "JavaScript",
+      value: "80"
+    }
+  ];
 
   return <section className="section">
     <Wrapper className='section-center'>
       <Pie3D data={languages} />
-      {/* <ExampleChart data={chartData}/>; */}
+      <div></div>
+      <Doughnut2D data={languageStars} />
     </Wrapper>
   </section>
 };
