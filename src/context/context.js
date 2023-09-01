@@ -8,13 +8,26 @@ const rootUrl = 'https://api.github.com';
 
 const GithubContext = React.createContext();
 
-const GithubProvider = ({children}) => {
+const GithubProvider = ({ children }) => {
     const [githubUser, setGithubUser] = useState(mockUser);
     const [repos, setRepos] = useState(mockRepos);
     const [followers, setFollowers] = useState(mockFollowers);
+    const [requests, setRequests] = useState(0);
+    const [loading, setLoading] = useState(false);
 
+    const checkRequests = () => {
+        axios(`${rootUrl}/rate_limit`)
+            .then(({ data: { rate: { used, remaining } } }) => {
+                setRequests(used);
+                if (remaining === 0) {
+                    // throw an error
+                }
+            }).catch((err) => console.log(err));
+    }
+
+    useEffect(checkRequests, [])
     return <GithubContext.Provider value={{
-        githubUser, repos, followers
+        githubUser, repos, followers, requests
     }}>
         {children}
     </GithubContext.Provider>
@@ -22,4 +35,4 @@ const GithubProvider = ({children}) => {
 
 const useGlobal = () => React.useContext(GithubContext);
 
-export {GithubProvider, useGlobal};
+export { GithubProvider, useGlobal };
