@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MdSearch } from 'react-icons/md';
 import { useGlobal } from '../context/context';
 const Search = () => {
-  const {requests} = useGlobal();
+  const {requests, error} = useGlobal();
   const [user, setUser] = useState('')
 
   const handleSubmit = (e) => {
@@ -14,6 +14,11 @@ const Search = () => {
   }
   return <section className='section'>
     <Wrapper className='section-center'>
+      {error.show &&
+      <ErrorWrapper>
+        <p>{error.msg}</p>
+      </ErrorWrapper>
+      }
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <MdSearch />
