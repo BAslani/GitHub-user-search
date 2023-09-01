@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { MdSearch } from 'react-icons/md';
 import { useGlobal } from '../context/context';
 const Search = () => {
-  const {requests, error} = useGlobal();
+  const {requests, error, searchGithubUser, loading} = useGlobal();
   const [user, setUser] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user) {
-      console.log(user);
+      searchGithubUser(user);
     }
   }
   return <section className='section'>
@@ -28,7 +28,7 @@ const Search = () => {
             value={user}
             onChange={(e) => setUser(e.target.value)}
           />
-          {requests < 60 && <button type="submit">search</button>}
+          {(requests < 60) && !loading && (<button type="submit">search</button>)}
         </div>
       </form>
       <h3>requests : {requests} / 60</h3>

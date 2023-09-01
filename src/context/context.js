@@ -16,6 +16,29 @@ const GithubProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState({ show: false, msg: "" })
 
+    // search
+    const searchGithubUser = async (user) => {
+        toggleError();
+        setLoading(true)
+        const response = await axios(`${rootUrl}/users/${user}`).catch(err => console.log(err));
+        if (response) {
+            setGithubUser(response.data);
+            const {login, followers_url} = response.data;
+            axios(`${rootUrl}/users/${login}/repos?per_page=100`)
+                .then((response) => {
+                    setRepos(response.data)
+                });
+            axios(`${followers_url}?per_page=100`)
+                .then((response) => {
+                    setFollowers(response.data)
+                });
+            } else {
+            toggleError(true, 'no user matched your search')
+        }
+        checkRequests();
+        setLoading(false)
+    }
+
     const checkRequests = () => {
         axios(`${rootUrl}/rate_limit`)
             .then(({ data: { rate: { used, remaining } } }) => {
@@ -33,7 +56,7 @@ const GithubProvider = ({ children }) => {
 
     useEffect(checkRequests, [])
     return <GithubContext.Provider value={{
-        githubUser, repos, followers, requests, error
+        githubUser, repos, followers, requests, error, searchGithubUser, loading
     }}>
         {children}
     </GithubContext.Provider>
