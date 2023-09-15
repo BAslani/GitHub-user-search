@@ -4,22 +4,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { GithubProvider } from './context/context';
-import { Auth0Provider } from '@auth0/auth0-react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Auth0Provider
-      // domain={process.env.REACT_APP_DOMAIN}
-      // clientId={process.env.REACT_APP_CLIENT_ID}
-      domain='dev-4qamel3bp2w0hrvt.us.auth0.com'
-      clientId='iV5Q9rPVwhpWTzkEYgD53A8Sou6NcLPx'
-      redirectUri={window.location.origin}
-      cacheLocation='localstorage'
-    >
       <GithubProvider>
         <App />
       </GithubProvider>
-    </Auth0Provider>
   </React.StrictMode>
 );
 
